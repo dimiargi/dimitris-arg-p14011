@@ -1,0 +1,67 @@
+from bs4 import BeautifulSoup
+import requests
+import json
+
+file = open('text.txt', 'w')
+
+for i in range(100):
+    webpage = requests.get('https://drand.cloudflare.com/public/' + str(1652836 - i))
+    soup = BeautifulSoup(webpage.text, 'lxml')
+    data = soup.find('p').text
+    jsondata = json.loads(data)
+    randomness = jsondata["randomness"]
+    randomness16bit = int(randomness, 16)
+    file.write(bin(randomness16bit)[2:])
+
+file = open('text.txt', 'r')
+text = file.read()
+
+last_element_pos = 0
+monades_list = ['']
+
+if (text[0] == '1'):
+    monades_list[0] += '1'
+
+for i in range(1, len(text)):
+    if(text[i] == '1'):
+        if(text[i - 1] == '1'):
+            monades_list[last_element_pos] += '1'
+        else:
+            last_element_pos += 1
+            monades_list.append('1')
+
+last_element_pos = 0
+midenika_list = ['']
+
+if (text[0] == '0'):
+    midenika_list[0] += '0'
+
+for i in range(1, len(text)):
+    if(text[i] == '0'):
+        if(text[i - 1] == '0'):
+              midenika_list[last_element_pos] += '0'
+        else:
+            last_element_pos += 1
+            midenika_list.append('0')
+
+if(len(monades_list) > 0):
+    max_pos = 0
+    max = monades_list[0]
+for i in range(len(monades_list)):
+    if(len(monades_list[i]) > len(max)):
+        max = monades_list[i]
+        max_pos = i
+
+print('Μέγιστη ακολουθία μονάδων: ' + max + '. Η ακολουθία αυτή είναι η ακολουθία ' + str(max_pos))
+
+if(len(midenika_list) > 0):
+    max_pos = 0
+    max = midenika_list[0]
+max_pos = 0
+max = midenika_list[0]
+for i in range(len(midenika_list)):
+    if(len(midenika_list[i]) > len(max)):
+        max = midenika_list[i]
+        max_pos = i
+
+print('Μέγιστη ακολουθία μηδενικών: ' + max + '. Η ακολουθία αυτή είναι η ακολουθία ' + str(max_pos))

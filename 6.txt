@@ -1,0 +1,56 @@
+import random
+
+#μετρητης για ποσες φορες Η ΒΑΣΙΛΙΣΣΑ ΤΡΩΕΙ ΤΟΝ ΠΥΡΓΟ Η ΤΟΝ ΑΞΙΩΜΤΙΚΟ Η ΚΑΙ ΤΟΥΣ 2 ΜΑΖΙ 
+cnta =0
+#μετρητης για ποσες φορες Ο ΠΥΡΓΟΣ ΚΑΙ Ο ΑΞΙΩΜΑΤΙΚΟΣ ΤΡΩΝΕ ΤΗ ΒΑΣΙΛΙΣΣΑ
+cntb =0
+for l in range(100):
+    QUEEN=1
+    BISHOP=1
+    ROOK=1
+    #τοποθετησε τα πιονια
+    tmp=["0"]*(64-QUEEN-BISHOP-ROOK)
+    tmp+=["Q"]*QUEEN
+    tmp+=["B"]*BISHOP
+    tmp+=["R"]*ROOK
+    #ανακατεψε τα
+    random.shuffle(tmp)
+    board=[]
+    
+    for i in range(8):
+        board+=[tmp[8*i:8*i+8]]
+
+    for i in range(8):
+        for j in range(8):
+            #βλεπω που ειναι η ΒΑΣΙΛΙΣΣΑ
+          if board[i][j]=="Q":
+            for k in range(8):
+                #βλεπω αν o πυργος ειναι καθετα η οριζοντια με τη βασιλισσα 
+                if board[k][j]=="R":
+                    cnta+=1
+                    cntb+=1
+                if board[i][k]=="R":
+                    cnta+=1
+                    cntb+=1
+                    #βλεπω αν o αξιωματικος ειναι καθετα η οριζοντια με τη βασιλισσα 
+                if board[k][j]=="B":
+                    cnta+=1
+                if board[i][k]=="B":
+                    cnta+=1
+                    #βλεπω αν o ΑΞΙΩΜΑΤΙΚΟΣ ΕΙΝΑΙ ΔΙΑΓΩΝΙΑ απο τη βασιλισσα
+                if k+j-i>=0 and k+j-i<8 and board[k][k+j-i]=="B":
+                    cnta+=1
+                    cntb+=1
+                if -k+j+i>=0 and -k+j+i<8 and board[k][-k+i+j]=="B":
+                    cnta+=1
+                    cntb+=1
+                   #βλεπω αν o πυργος ΕΙΝΑΙ ΔΙΑΓΩΝΙΑ απο τη βασιλισσα
+                if k+j-i>=0 and k+j-i<8 and board[k][k+j-i]=="R":
+                    cnta+=1
+                if -k+j+i>=0 and -k+j+i<8 and board[k][-k+i+j]=="R":
+                    cnta+=1
+             
+
+                
+print ("παίχτης A " ,cnta," βαθμούς")
+print ("παίχτης B " ,cntb," βαθμούς")

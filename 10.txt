@@ -1,0 +1,40 @@
+textfile = open('text.txt', 'r')
+text = textfile.read()
+
+characters = []
+
+#Μετατροπή των ASCII χαρακτήρων σε δυαδική μορφή μήκους 7
+for character in text:
+    characters.append('{0:07b}'.format(ord(character))[:2] + '{0:07b}'.format(ord(character))[-2:])
+
+characters16bit = []
+
+for i in range(0, len(characters), 4):
+    number = ''
+    for j in range(i, i + 4):
+        if (j < len(characters)):
+           number += characters[j]
+    characters16bit.append(int(number, 2))
+
+
+dividable_by_two = 0
+dividable_by_three = 0
+dividable_by_five = 0
+dividable_by_seven = 0
+
+#Εύρεση στατιστικών:
+for num in characters16bit:
+    if(num % 2 == 0):
+        dividable_by_two += 1
+    if(num % 3 == 0):
+        dividable_by_three += 1
+    if(num % 5 == 0):
+        dividable_by_five += 1
+    if(num % 7 == 0):
+        dividable_by_seven += 1
+
+
+print('Οι ζυγοί αριθμοί είναι το ' + str((dividable_by_two / len(characters16bit)) * 100) + '% των αριθμών')
+print('Οι αριθμοί που διαιρούνται με το τρία είναι το ' + str((dividable_by_three / len(characters16bit)) * 100) + '% των αριθμών')
+print('Οι αριθμοί που διαιρούνται με το πέντε είναι το ' + str((dividable_by_five / len(characters16bit)) * 100) + '% των αριθμών')
+print('Οι αριθμοί που διαιρούνται με το επτά είναι το ' + str((dividable_by_seven / len(characters16bit)) * 100) + '% των αριθμών')
